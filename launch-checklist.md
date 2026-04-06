@@ -18,7 +18,7 @@ Current state snapshot:
 ## 2. EEAT and Owner Authority
 
 - [x] Add a dedicated owner story for Eyal: experience, service philosophy, standards, and why customers trust him.
-- [ ] Add real trust signals that can be verified: years in business, coverage area, business hours, address, contact channels, and review profiles.
+- [x] Add real trust signals that can be verified: years in business, coverage area, business hours, address, contact channels, and review profiles.
 - [x] Add a short "Why Homeowners Trust Eyal" section on the home page and About page.
 - [x] Add project-backed proof with captions that explain the problem, the fix, and the result.
 - [ ] Add review/testimonial content if accurate source material is available.
