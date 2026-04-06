@@ -39,6 +39,9 @@
   const qs = (sel, ctx = document) => ctx.querySelector(sel);
   const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
+  /** Shared header element used for sticky navigation measurements */
+  const getHeader = () => qs('.navbar') || qs('header');
+
   /* ----------------------------------------------------------
      1. PRELOADER
   ---------------------------------------------------------- */
@@ -59,7 +62,7 @@
      Adds .scrolled class to nav when page scrolls past 100px
   ---------------------------------------------------------- */
   function initNavScroll() {
-    const nav = qs('nav') || qs('.navbar') || qs('header');
+    const nav = getHeader();
     if (!nav) return;
 
     const handleScroll = () => {
@@ -138,7 +141,7 @@
         if (!target) return;
 
         e.preventDefault();
-        const navHeight = (qs('nav') || qs('.navbar') || qs('header'))?.offsetHeight || 0;
+        const navHeight = getHeader()?.offsetHeight || 0;
         const targetPosition = target.getBoundingClientRect().top + window.scrollY - navHeight;
 
         window.scrollTo({
@@ -319,11 +322,14 @@
     if (!navLinks.length) return;
 
     navLinks.forEach((link) => {
+      link.classList.remove('active');
+      link.removeAttribute('aria-current');
       const href = link.getAttribute('href');
       if (!href || href.startsWith('#')) return;
       const normalizedHref = href.split('#')[0] || 'index.html';
       if (normalizedHref === currentPath) {
         link.classList.add('active');
+        link.setAttribute('aria-current', 'page');
       }
     });
   }
@@ -515,7 +521,7 @@
         successEl = document.createElement('div');
         successEl.className = 'form-success';
         successEl.hidden = true;
-        successEl.textContent = 'Thanks. This template form is ready for your final CRM or email integration.';
+        successEl.textContent = 'Thanks. Your request details have been captured and are ready for live follow-up once the delivery workflow is connected.';
         form.appendChild(successEl);
       }
 

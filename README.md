@@ -1,15 +1,23 @@
 # Springs Garage Door Services
 
-Modern dark-theme marketing site rebuild for Springs Garage Door Services with a stronger SEO, EEAT, and owner-led positioning for Eyal.
+Static marketing site for Springs Garage Door Services with an owner-led brand story, local SEO structure, and a multi-page experience for Colorado Springs and nearby communities.
 
 ## Structure
 
-- `index.html` - homepage template
+- `index.html` - homepage
+- `about.html` - owner story and trust page
+- `services.html` - service overview and FAQs
+- `service-areas.html` - local coverage page
+- `contact.html` - quote request and contact page
+- `terms.html` - terms of use
+- `privacy.html` - privacy policy
 - `css/style.css` - global styles
-- `js/main.js` - interactions and WOW effects
-- `images/` - localized brand assets and service imagery
-- `launch-checklist.md` - remaining launch tasks
+- `js/main.js` - shared interactions and animations
+- `images/` - brand assets and service imagery
+- `sitemap.xml` - XML sitemap for search engines
+- `robots.txt` - crawler rules and sitemap reference
+- `launch-checklist.md` - remaining launch tasks and QA follow-up
 
 ## Status
 
-This repository currently contains the homepage template, localized assets, site scripts, and the implementation checklist for completing the rest of the page set.
+The site now includes the core page set, shared navigation and footer, launch metadata, local business schema, contact form flow, and baseline SEO files. Remaining work is focused on factual verification, final asset optimization, and launch QA.
