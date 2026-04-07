@@ -652,6 +652,131 @@ body.menu-open {
     color: var(--text);
 }
 
+.brands-section {
+    padding-top: 4.5rem;
+}
+
+.brands-lead {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 1.25rem;
+    align-items: end;
+    margin-bottom: 2rem;
+}
+
+.brands-lead .section-heading {
+    margin-bottom: 0;
+}
+
+.brands-note,
+.brand-tile,
+.brands-footnote {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: var(--shadow);
+}
+
+.brands-note {
+    padding: 1.35rem;
+    background:
+        radial-gradient(circle at top right, rgba(246, 191, 42, 0.14), transparent 52%),
+        linear-gradient(160deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+}
+
+.brands-note p,
+.brands-footnote p {
+    margin: 0;
+}
+
+.brands-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.brand-tile {
+    display: grid;
+    gap: 0.9rem;
+    min-height: 100%;
+    padding: 1rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015));
+    transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.brand-tile::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(214, 29, 23, 0), var(--red), var(--gold), rgba(246, 191, 42, 0));
+    opacity: 0.9;
+}
+
+.brand-tile:hover,
+.brand-tile:focus-visible {
+    transform: translateY(-4px);
+    border-color: var(--line-strong);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+}
+
+.brand-tile:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(246, 191, 42, 0.18), var(--shadow);
+}
+
+.brand-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 7rem;
+    padding: 1rem 1.1rem;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(235, 229, 217, 0.92));
+}
+
+.brand-mark img {
+    width: 100%;
+    height: 3.5rem;
+    object-fit: contain;
+}
+
+.brand-meta {
+    display: grid;
+    gap: 0.22rem;
+}
+
+.brand-meta strong {
+    color: var(--text);
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.brand-meta span {
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.brands-footnote {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    padding: 1.15rem 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.brands-footnote p {
+    max-width: 42rem;
+}
+
 .cards-grid {
     display: grid;
     gap: 1.25rem;
@@ -1446,6 +1571,7 @@ body.menu-open {
     .hero-grid,
     .page-hero-shell,
     .owner-grid,
+    .brands-lead,
     .split-grid,
     .contact-split,
     .feature-split,
@@ -1464,12 +1590,17 @@ body.menu-open {
     }
 
     .cards-grid.three,
+    .brands-grid,
     .zones-grid,
     .process-grid,
     .stats-grid,
     .footer-grid,
     .info-strip {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .brands-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .projects-grid,
@@ -1578,12 +1709,17 @@ body.menu-open {
     .table-grid,
     .cards-grid.two,
     .cards-grid.three,
+    .brands-grid,
     .zones-grid,
     .process-grid,
     .stats-grid,
     .footer-grid,
     .info-strip {
         grid-template-columns: 1fr;
+    }
+
+    .brands-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .hero-visual {
@@ -1609,6 +1745,7 @@ body.menu-open {
     .page-hero-copy,
     .page-hero-visual,
     .cta-band,
+    .brands-note,
     .service-card,
     .feature-card,
     .zone-card,
@@ -1619,6 +1756,16 @@ body.menu-open {
     .aside-card,
     .terms-panel {
         padding: 1.25rem;
+    }
+
+    .brand-tile,
+    .brands-footnote {
+        padding: 1.1rem;
+    }
+
+    .brands-footnote {
+        flex-direction: column;
+        align-items: stretch;
     }
 
     .card-media {
@@ -1641,6 +1788,10 @@ body.menu-open {
 
     .btn {
         width: 100%;
+    }
+
+    .brands-grid {
+        grid-template-columns: 1fr;
     }
 
     .brand-badge img {
