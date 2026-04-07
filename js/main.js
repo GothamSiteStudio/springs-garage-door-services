@@ -836,6 +836,357 @@
     });
   }
 
+  function truncateText(text, maxLength) {
+    if (!text) return '';
+    if (text.length <= maxLength) return text;
+    return `${text.slice(0, maxLength).trim()}...`;
+  }
+
+  function buildStarString(rating) {
+    const normalized = Math.max(1, Math.min(5, Math.round(rating || 5)));
+    return `${'★'.repeat(normalized)}${'☆'.repeat(5 - normalized)}`;
+  }
+
+  function setGoogleBusinessLinks(card, profileUrl, reviewUrl, reviewLabel) {
+    const profileLink = qs('[data-google-profile-link]', card);
+    const reviewLink = qs('[data-google-review-link]', card);
+
+    if (profileLink && profileUrl) {
+      profileLink.href = profileUrl;
+    }
+
+    if (reviewLink && reviewUrl) {
+      reviewLink.href = reviewUrl;
+      reviewLink.textContent = reviewLabel;
+    }
+  }
+
+  function renderGoogleBusinessReviews(reviewList, reviews, maxReviews) {
+    reviewList.innerHTML = '';
+
+    reviews.slice(0, maxReviews).forEach((review) => {
+      const card = document.createElement('article');
+      card.className = 'google-review-card';
+
+      const top = document.createElement('div');
+      top.className = 'google-review-top';
+
+      const author = document.createElement('div');
+      author.className = 'google-review-author';
+
+      const authorName = document.createElement('strong');
+      authorName.textContent = review.author_name || 'Google customer';
+
+      const reviewTime = document.createElement('span');
+      reviewTime.textContent = review.relative_time_description || 'Google review';
+
+      const stars = document.createElement('span');
+      stars.className = 'google-review-stars';
+      stars.textContent = buildStarString(review.rating);
+
+      const body = document.createElement('p');
+      body.textContent = truncateText(
+        review.text || 'Verified Google review from a Springs Garage Door Services customer.',
+        180
+      );
+
+      author.append(authorName, reviewTime);
+      top.append(author, stars);
+      card.append(top, body);
+      reviewList.appendChild(card);
+    });
+
+    reviewList.hidden = !reviewList.childElementCount;
+  }
+
+  function createGoogleBusinessCard(footerBrand, config) {
+    const existingCard = qs('.google-business-card', footerBrand);
+    if (existingCard) return existingCard;
+
+    const card = document.createElement('section');
+    card.className = 'google-business-card surface';
+
+    const header = document.createElement('div');
+    header.className = 'google-business-header';
+
+    const headingCopy = document.createElement('div');
+    const tag = document.createElement('div');
+    tag.className = 'card-tag';
+    tag.textContent = 'Google Business';
+
+    const title = document.createElement('h2');
+    title.textContent = 'Reviews, hours, and profile';
+
+    headingCopy.append(tag, title);
+
+    const rating = document.createElement('div');
+    rating.className = 'google-business-rating';
+    rating.setAttribute('aria-label', `Google rating ${config.fallbackRating} out of 5`);
+
+    const ratingValue = document.createElement('strong');
+    ratingValue.dataset.googleRating = 'value';
+    ratingValue.textContent = config.fallbackRating;
+
+    const ratingLabel = document.createElement('span');
+    ratingLabel.textContent = 'Google rating';
+
+    rating.append(ratingValue, ratingLabel);
+    header.append(headingCopy, rating);
+
+    const summary = document.createElement('p');
+    summary.className = 'google-business-copy';
+    summary.dataset.googleSummary = 'value';
+    summary.textContent = 'View the verified Google Business profile for directions, business hours, and current customer feedback.';
+
+    const meta = document.createElement('p');
+    meta.className = 'google-business-meta';
+    meta.dataset.googleMeta = 'value';
+    meta.textContent = 'Current profile for Springs Garage Door Services in Colorado Springs.';
+
+    const reviewList = document.createElement('div');
+    reviewList.className = 'google-review-list';
+    reviewList.dataset.googleReviewList = 'value';
+    reviewList.hidden = true;
+
+    const actions = document.createElement('div');
+    actions.className = 'review-links review-links-cta';
+
+    const profileLink = document.createElement('a');
+    profileLink.dataset.googleProfileLink = 'value';
+    profileLink.target = '_blank';
+    profileLink.rel = 'noopener noreferrer';
+    profileLink.textContent = 'View Google Business';
+
+    const reviewLink = document.createElement('a');
+    reviewLink.dataset.googleReviewLink = 'value';
+    reviewLink.target = '_blank';
+    reviewLink.rel = 'noopener noreferrer';
+    reviewLink.textContent = 'Read Google reviews';
+
+    actions.append(profileLink, reviewLink);
+    card.append(header, summary, meta, reviewList, actions);
+    footerBrand.appendChild(card);
+
+    setGoogleBusinessLinks(card, config.profileUrl, config.reviewUrl || config.profileUrl, 'Read Google reviews');
+
+    return card;
+  }
+
+  function loadGooglePlacesApi(apiKey) {
+    if (window.google && window.google.maps && window.google.maps.places) {
+      return Promise.resolve();
+    }
+
+    if (window.__googleBusinessPlacesPromise) {
+      return window.__googleBusinessPlacesPromise;
+    }
+
+    window.__googleBusinessPlacesPromise = new Promise((resolve, reject) => {
+      const callbackName = `__googleBusinessInit${Date.now()}`;
+      const script = document.createElement('script');
+
+      window[callbackName] = () => {
+        delete window[callbackName];
+        resolve();
+      };
+
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&libraries=places&callback=${callbackName}`;
+      script.async = true;
+      script.defer = true;
+      script.onerror = () => {
+        delete window[callbackName];
+        window.__googleBusinessPlacesPromise = null;
+        reject(new Error('Google Maps Places API could not be loaded.'));
+      };
+
+      document.head.appendChild(script);
+    });
+
+    return window.__googleBusinessPlacesPromise;
+  }
+
+  function getGoogleBusinessDetails(config) {
+    if (window.__googleBusinessPlacePromise) {
+      return window.__googleBusinessPlacePromise;
+    }
+
+    window.__googleBusinessPlacePromise = new Promise((resolve, reject) => {
+      const host = document.createElement('div');
+      host.style.display = 'none';
+      document.body.appendChild(host);
+
+      const service = new window.google.maps.places.PlacesService(host);
+      const placesStatus = window.google.maps.places.PlacesServiceStatus;
+
+      const cleanup = () => {
+        if (host.parentNode) {
+          host.parentNode.removeChild(host);
+        }
+      };
+
+      const resolveDetails = (placeId, fallbackPlace) => {
+        service.getDetails(
+          {
+            placeId,
+            fields: ['name', 'place_id', 'formatted_address', 'rating', 'user_ratings_total', 'url', 'reviews'],
+          },
+          (place, detailsStatus) => {
+            cleanup();
+
+            if (detailsStatus !== placesStatus.OK || !place) {
+              resolve(fallbackPlace);
+              return;
+            }
+
+            resolve(Object.assign({}, fallbackPlace, place));
+          }
+        );
+      };
+
+      if (config.placeId) {
+        resolveDetails(config.placeId, {
+          name: config.businessName,
+          formatted_address: config.businessQuery,
+        });
+        return;
+      }
+
+      if (!config.businessQuery) {
+        cleanup();
+        reject(new Error('Google Business query is missing.'));
+        return;
+      }
+
+      service.findPlaceFromQuery(
+        {
+          query: config.businessQuery,
+          fields: ['name', 'place_id', 'formatted_address', 'rating', 'user_ratings_total'],
+        },
+        (results, status) => {
+          if (status !== placesStatus.OK || !results || !results.length) {
+            cleanup();
+            reject(new Error('Google Business listing was not found.'));
+            return;
+          }
+
+          resolveDetails(results[0].place_id, results[0]);
+        }
+      );
+    }).catch((error) => {
+      window.__googleBusinessPlacePromise = null;
+      throw error;
+    });
+
+    return window.__googleBusinessPlacePromise;
+  }
+
+  function hydrateGoogleBusinessCard(card, config, place) {
+    const ratingValue = qs('[data-google-rating]', card);
+    const summary = qs('[data-google-summary]', card);
+    const meta = qs('[data-google-meta]', card);
+    const reviewList = qs('[data-google-review-list]', card);
+    const liveRating = typeof place.rating === 'number' ? place.rating.toFixed(1) : config.fallbackRating;
+    const reviewCount = Number.isFinite(place.user_ratings_total) ? place.user_ratings_total : 0;
+    const profileUrl = place.url || config.profileUrl;
+    const reviewUrl = place.place_id
+      ? `https://search.google.com/local/writereview?placeid=${encodeURIComponent(place.place_id)}`
+      : (config.reviewUrl || profileUrl);
+
+    if (ratingValue) {
+      ratingValue.textContent = liveRating;
+      if (ratingValue.parentElement) {
+        ratingValue.parentElement.setAttribute('aria-label', `Google rating ${liveRating} out of 5`);
+      }
+    }
+
+    if (summary) {
+      summary.textContent = place.formatted_address
+        ? `Verified Google Business profile for ${place.formatted_address}.`
+        : 'Verified Google Business profile for Springs Garage Door Services in Colorado Springs.';
+    }
+
+    if (meta) {
+      meta.textContent = reviewCount
+        ? `${liveRating} on Google from ${reviewCount} customer reviews.`
+        : `${liveRating} on Google.`;
+    }
+
+    setGoogleBusinessLinks(
+      card,
+      profileUrl,
+      reviewUrl,
+      place.place_id ? 'Write a review' : 'Read Google reviews'
+    );
+
+    if (reviewList && Array.isArray(place.reviews) && place.reviews.length) {
+      renderGoogleBusinessReviews(reviewList, place.reviews, config.maxReviews);
+    }
+  }
+
+  function initGoogleBusinessWidget() {
+    const footerBrands = qsa('.footer-brand');
+    if (!footerBrands.length) return;
+
+    const defaults = {
+      apiKey: '',
+      placeId: '',
+      businessName: 'Springs Garage Door Services',
+      businessQuery: 'Springs Garage Door Services, 3350 Chelton Loop N Ste A, Colorado Springs, CO 80909',
+      profileUrl: 'https://maps.app.goo.gl/xWrMC7ewGm9NDtC78',
+      reviewUrl: 'https://maps.app.goo.gl/xWrMC7ewGm9NDtC78',
+      fallbackRating: '5.0',
+      maxReviews: 2,
+    };
+
+    const config = Object.assign({}, defaults, window.googleBusinessConfig || {});
+    config.apiKey = typeof config.apiKey === 'string' ? config.apiKey.trim() : '';
+    config.maxReviews = Math.max(1, Number.parseInt(config.maxReviews, 10) || defaults.maxReviews);
+
+    const cards = footerBrands.map((footerBrand) => createGoogleBusinessCard(footerBrand, config));
+
+    if (!config.apiKey) {
+      return;
+    }
+
+    let hasRequestedData = false;
+
+    const requestGoogleDetails = () => {
+      if (hasRequestedData) return;
+      hasRequestedData = true;
+
+      loadGooglePlacesApi(config.apiKey)
+        .then(() => getGoogleBusinessDetails(config))
+        .then((place) => {
+          cards.forEach((card) => hydrateGoogleBusinessCard(card, config, place));
+        })
+        .catch(() => {
+          cards.forEach((card) => {
+            const meta = qs('[data-google-meta]', card);
+            if (meta) {
+              meta.textContent = 'Verified Google Business profile for Springs Garage Door Services in Colorado Springs.';
+            }
+          });
+        });
+    };
+
+    if (!('IntersectionObserver' in window)) {
+      requestGoogleDetails();
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          observer.disconnect();
+          requestGoogleDetails();
+        }
+      },
+      { rootMargin: '200px 0px' }
+    );
+
+    cards.forEach((card) => observer.observe(card));
+  }
+
   /* ----------------------------------------------------------
      19. MAGNETIC BUTTON EFFECT ON CTA BUTTONS
      Subtle cursor-follow effect - disabled on mobile
@@ -1026,6 +1377,7 @@
     initCurrentPageLinks();
     initActiveNavHighlight();
     initCurrentYear();
+    initGoogleBusinessWidget();
 
     // --- Animations & effects ---
     initScrollAnimations();

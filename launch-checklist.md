@@ -22,6 +22,7 @@ Current state snapshot:
 - [x] Add a short "Why Homeowners Trust Eyal" section on the home page and About page.
 - [x] Add project-backed proof with captions that explain the problem, the fix, and the result.
 - [ ] Add review/testimonial content if accurate source material is available.
+	- Next step: connect the Google Business reviews widget with the live Google Places API key and place ID, then confirm the footer is pulling rating and review data from the verified business profile.
 - [ ] Add warranty/process language where true: inspection, recommendation, installation standards, and post-job support.
 - [ ] Add licensing, insurance, certifications, or manufacturer partnerships only if they are factually confirmed.
 - [x] Add a stronger local-business voice so the site reads like a real owner-led company, not a generic contractor template.
