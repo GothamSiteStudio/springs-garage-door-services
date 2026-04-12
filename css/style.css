@@ -1411,10 +1411,30 @@ body.menu-open {
     font-size: 0.92rem;
 }
 
+.subfooter-meta {
+    display: grid;
+    gap: 0.3rem;
+}
+
 .subfooter-links {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+}
+
+.subfooter-credit {
+    color: rgba(247, 243, 232, 0.58);
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+}
+
+.subfooter-credit a {
+    color: var(--muted-strong);
+}
+
+.subfooter-credit a:hover,
+.subfooter-credit a:focus-visible {
+    color: var(--gold-soft);
 }
 
 .back-to-top {
