@@ -22,7 +22,8 @@ Current state snapshot:
 - [x] Add a short "Why Homeowners Trust Eyal" section on the home page and About page.
 - [x] Add project-backed proof with captions that explain the problem, the fix, and the result.
 - [ ] Add review/testimonial content if accurate source material is available.
-	- Next step: connect the Google Business reviews widget with the live Google Places API key and place ID, then confirm the footer is pulling rating and review data from the verified business profile.
+	- Reviews widget now reads from a static `data/google-reviews.json` file. A GitHub Action (`.github/workflows/fetch-reviews.yml`) fetches fresh reviews weekly using the Places API key stored in GitHub Secrets. No API key is exposed client-side.
+	- Next step: add `GOOGLE_PLACES_API_KEY` and `GOOGLE_PLACE_ID` as repository secrets in GitHub, then trigger the workflow manually to populate live reviews.
 - [ ] Add warranty/process language where true: inspection, recommendation, installation standards, and post-job support.
 - [ ] Add licensing, insurance, certifications, or manufacturer partnerships only if they are factually confirmed.
 - [x] Add a stronger local-business voice so the site reads like a real owner-led company, not a generic contractor template.

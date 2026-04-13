@@ -2,3 +2,8 @@ Thumbs.db
 Desktop.ini
 .DS_Store
 .playwright-mcp/
+
+# Local secrets
+.env
+.env.*
+!.env.example

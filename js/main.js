@@ -1080,6 +1080,32 @@
     return window.__googleBusinessPlacePromise;
   }
 
+  function getGoogleBusinessDetailsFromEndpoint(endpointUrl) {
+    return fetch(endpointUrl, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Reviews endpoint failed with status ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((payload) => {
+        const place = payload && typeof payload === 'object'
+          ? (payload.place || payload.data || payload)
+          : null;
+
+        if (!place || typeof place !== 'object') {
+          throw new Error('Reviews endpoint returned an invalid payload.');
+        }
+
+        return place;
+      });
+  }
+
   function hydrateGoogleBusinessCard(card, config, place) {
     const ratingValue = qs('[data-google-rating]', card);
     const summary = qs('[data-google-summary]', card);
@@ -1130,6 +1156,7 @@
     const defaults = {
       apiKey: '',
       placeId: '',
+      reviewsEndpoint: '',
       businessName: 'Springs Garage Door Services',
       businessQuery: 'Springs Garage Door Services, 3350 Chelton Loop N Ste A, Colorado Springs, CO 80909',
       profileUrl: 'https://maps.app.goo.gl/xWrMC7ewGm9NDtC78',
@@ -1140,11 +1167,12 @@
 
     const config = Object.assign({}, defaults, window.googleBusinessConfig || {});
     config.apiKey = typeof config.apiKey === 'string' ? config.apiKey.trim() : '';
+    config.reviewsEndpoint = typeof config.reviewsEndpoint === 'string' ? config.reviewsEndpoint.trim() : '';
     config.maxReviews = Math.max(1, Number.parseInt(config.maxReviews, 10) || defaults.maxReviews);
 
     const cards = footerBrands.map((footerBrand) => createGoogleBusinessCard(footerBrand, config));
 
-    if (!config.apiKey) {
+    if (!config.apiKey && !config.reviewsEndpoint) {
       return;
     }
 
@@ -1154,8 +1182,11 @@
       if (hasRequestedData) return;
       hasRequestedData = true;
 
-      loadGooglePlacesApi(config.apiKey)
-        .then(() => getGoogleBusinessDetails(config))
+      const placePromise = config.reviewsEndpoint
+        ? getGoogleBusinessDetailsFromEndpoint(config.reviewsEndpoint)
+        : loadGooglePlacesApi(config.apiKey).then(() => getGoogleBusinessDetails(config));
+
+      placePromise
         .then((place) => {
           cards.forEach((card) => hydrateGoogleBusinessCard(card, config, place));
         })
