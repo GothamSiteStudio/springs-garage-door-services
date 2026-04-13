@@ -1,0 +1,40 @@
+name: Fetch Google Reviews
+
+on:
+  schedule:
+    - cron: '0 6 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-reviews:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch reviews from Google Places API
+        env:
+          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
+          GOOGLE_PLACE_ID: ${{ secrets.GOOGLE_PLACE_ID }}
+        run: node scripts/fetch-google-reviews.js
+
+      - name: Commit updated reviews if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/google-reviews.json
+          if git diff --cached --quiet; then
+            echo "No changes to reviews."
+          else
+            git commit -m "chore: update Google reviews data [skip ci]"
+            git push
+          fi
