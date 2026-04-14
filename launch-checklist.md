@@ -29,7 +29,9 @@ Current state snapshot:
 	- Services page now includes a dedicated "Workmanship and Warranty" section with three cards: manufacturer-backed components, workmanship accountability, and post-job support.
 	- Each service listing on the Services page gained a warranty or post-job bullet point.
 	- Home and About pages gained warranty and follow-up items in their authority/trust lists.
-- [ ] Add licensing, insurance, certifications, or manufacturer partnerships only if they are factually confirmed.
+- [x] Add licensing, insurance, certifications, or manufacturer partnerships only if they are factually confirmed.
+	- Added Colorado Secretary of State Certificate of Good Standing (LLC registered 01/02/2024, entity ID 20241004519) as a downloadable PDF at `docs/certificate-of-good-standing.pdf`.
+	- Linked from the About page Trust Signals section and the Home page "Why Homeowners Trust Eyal" authority list.
 - [x] Add a stronger local-business voice so the site reads like a real owner-led company, not a generic contractor template.
 
 ## 3. SEO Foundations
