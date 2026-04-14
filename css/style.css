@@ -512,12 +512,19 @@ body.menu-open {
 
 .hero-visual {
     position: relative;
-    min-height: 42rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    align-content: start;
 }
 
 .hero-frame {
-    position: absolute;
-    inset: 2.5rem 0 0 3rem;
+    position: relative;
+    inset: auto;
+    grid-column: 1 / -1;
+    min-height: 24rem;
+    height: 42vw;
+    max-height: 38rem;
     overflow: hidden;
     border-radius: 2rem;
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -538,8 +545,8 @@ body.menu-open {
 }
 
 .hero-card {
-    position: absolute;
-    max-width: 22rem;
+    position: relative;
+    max-width: none;
     padding: 1.3rem;
     border-radius: var(--radius-lg);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -549,14 +556,13 @@ body.menu-open {
 }
 
 .hero-card.top {
-    top: 0;
-    right: 0;
+    top: auto;
+    right: auto;
 }
 
 .hero-card.bottom {
-    left: 0;
-    bottom: 0;
-    max-width: 18rem;
+    left: auto;
+    bottom: auto;
     background: linear-gradient(145deg, rgba(255, 198, 49, 0.16), rgba(254, 0, 0, 0.16)), rgba(13, 16, 21, 0.82);
 }
 
@@ -1855,11 +1861,13 @@ body.menu-open {
     }
 
     .hero-visual {
+        grid-template-columns: 1fr;
         min-height: 28rem;
     }
 
     .hero-frame {
-        inset: 2rem 0 0;
+        inset: auto;
+        min-height: 26rem;
     }
 
     .hero-card.top,
