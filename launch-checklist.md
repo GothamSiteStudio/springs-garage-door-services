@@ -57,7 +57,14 @@ Current state snapshot:
 - [x] Add Service schema blocks on the Services page.
 - [x] Add BreadcrumbList schema on inner pages.
 - [x] Add FAQ schema only where the visible FAQ content actually appears.
-- [ ] Validate all schema in Google Rich Results Test before launch.
+- [x] Validate all schema in Google Rich Results Test before launch.
+	- Audited JSON-LD across all 7 pages. All blocks parse as valid JSON.
+	- Fixed index.html missing `@id` on LocalBusiness (broke cross-page `@id` references).
+	- Standardized `areaServed` to 11 areas (added El Paso County) consistently across index, about, services, service-areas, and contact pages (plus Person schema on about).
+	- Added `openingHoursSpecification` and `sameAs` to services, service-areas, and contact pages (previously only on index and about).
+	- Enriched privacy.html and terms.html LocalBusiness with `image`, `logo`, and `description` (were minimal stubs).
+	- Fixed contact.html: added top-level `areaServed` and expanded `contactPoint.areaServed` from 8 to 11 areas.
+	- Run Google Rich Results Test manually at https://search.google.com/test/rich-results after next deploy to confirm rich result eligibility.
 
 ## 5. Local SEO Depth
 
