@@ -24,7 +24,11 @@ Current state snapshot:
 - [ ] Add review/testimonial content if accurate source material is available.
 	- Reviews widget now reads from a static `data/google-reviews.json` file. A GitHub Action (`.github/workflows/fetch-reviews.yml`) fetches fresh reviews weekly using the Places API key stored in GitHub Secrets. No API key is exposed client-side.
 	- Next step: add `GOOGLE_PLACES_API_KEY` and `GOOGLE_PLACE_ID` as repository secrets in GitHub, then trigger the workflow manually to populate live reviews.
-- [ ] Add warranty/process language where true: inspection, recommendation, installation standards, and post-job support.
+- [x] Add warranty/process language where true: inspection, recommendation, installation standards, and post-job support.
+	- Added manufacturer-backed warranty language, post-job functional testing, safety checks, follow-up support, and workmanship accountability across Services, Home, and About pages.
+	- Services page now includes a dedicated "Workmanship and Warranty" section with three cards: manufacturer-backed components, workmanship accountability, and post-job support.
+	- Each service listing on the Services page gained a warranty or post-job bullet point.
+	- Home and About pages gained warranty and follow-up items in their authority/trust lists.
 - [ ] Add licensing, insurance, certifications, or manufacturer partnerships only if they are factually confirmed.
 - [x] Add a stronger local-business voice so the site reads like a real owner-led company, not a generic contractor template.
 
