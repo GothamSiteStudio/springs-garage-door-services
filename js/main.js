@@ -14,6 +14,10 @@
   /** Detect mobile / low-power devices */
   const isMobile = () => window.innerWidth <= 768;
 
+  /** Detect user prefers reduced motion */
+  const prefersReducedMotion = () =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   /** Throttle - limits function calls to once per `limit` ms */
   function throttle(fn, limit) {
     let lastCall = 0;
@@ -160,6 +164,12 @@
     const elements = qsa('.animate-on-scroll');
     if (!elements.length) return;
 
+    // Immediately reveal all elements for users who prefer reduced motion
+    if (prefersReducedMotion()) {
+      elements.forEach((el) => el.classList.add('animated'));
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -185,6 +195,15 @@
   function initCounters() {
     const counters = qsa('[data-target]');
     if (!counters.length) return;
+
+    // Show final values immediately for reduced-motion users
+    if (prefersReducedMotion()) {
+      counters.forEach((el) => {
+        const target = parseInt(el.getAttribute('data-target'), 10);
+        if (!isNaN(target)) el.textContent = target.toLocaleString();
+      });
+      return;
+    }
 
     const animateCounter = (el) => {
       const target = parseInt(el.getAttribute('data-target'), 10);
@@ -234,7 +253,7 @@
      Disabled on mobile for performance
   ---------------------------------------------------------- */
   function initParallax() {
-    if (isMobile()) return;
+    if (isMobile() || prefersReducedMotion()) return;
 
     const heroSections = qsa('.hero, .hero-section, [data-parallax]');
     if (!heroSections.length) return;
@@ -341,6 +360,10 @@
   function initTypewriter() {
     const elements = qsa('.typewriter');
     if (!elements.length) return;
+
+    // Skip the typewriter effect entirely for reduced-motion users;
+    // the visible text content remains untouched.
+    if (prefersReducedMotion()) return;
 
     elements.forEach((el) => {
       const text = el.getAttribute('data-typewriter') || el.textContent;
@@ -572,7 +595,7 @@
      Disabled on mobile for performance
   ---------------------------------------------------------- */
   function initParticles() {
-    if (isMobile()) return;
+    if (isMobile() || prefersReducedMotion()) return;
 
     const heroSection = qs('.hero, .hero-section, #hero');
     if (!heroSection) return;
@@ -780,7 +803,7 @@
      Subtle tilt on mouse move - disabled on mobile
   ---------------------------------------------------------- */
   function initCardTilt() {
-    if (isMobile()) return;
+    if (isMobile() || prefersReducedMotion()) return;
 
     const cards = qsa('.service-card, .card-tilt');
     if (!cards.length) return;
@@ -1223,7 +1246,7 @@
      Subtle cursor-follow effect - disabled on mobile
   ---------------------------------------------------------- */
   function initMagneticButtons() {
-    if (isMobile()) return;
+    if (isMobile() || prefersReducedMotion()) return;
 
     const buttons = qsa('.cta-btn, .btn-magnetic, .magnetic, a.cta, button.cta');
     if (!buttons.length) return;
@@ -1281,6 +1304,12 @@
     const images = qsa('.reveal-image, .image-reveal, [data-reveal]');
     if (!images.length) return;
 
+    // Show images immediately for reduced-motion users
+    if (prefersReducedMotion()) {
+      images.forEach((img) => img.classList.add('revealed'));
+      return;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -1324,6 +1353,9 @@
   function initStaggerAnimation() {
     const grids = qsa('.stagger-grid, .services-grid, .grid-stagger, [data-stagger]');
     if (!grids.length) return;
+
+    // Skip stagger and keep content visible for reduced-motion users
+    if (prefersReducedMotion()) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -1369,7 +1401,7 @@
      Disabled on mobile for performance
   ---------------------------------------------------------- */
   function initCursorGlow() {
-    if (isMobile()) return;
+    if (isMobile() || prefersReducedMotion()) return;
 
     const hero = qs('.hero, .hero-section, #hero');
     if (!hero) return;

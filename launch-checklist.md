@@ -81,7 +81,12 @@ Current state snapshot:
 - [x] Add a simple trust-first quote flow: service type, location, urgency, contact details.
 - [x] Add thank-you or confirmation behavior for forms.
 - [x] Make emergency and same-day messaging prominent but accurate.
-- [ ] Check that animations support the site rather than slowing it down or distracting from the CTA.
+- [x] Check that animations support the site rather than slowing it down or distracting from the CTA.
+	- Audited 12+ animation systems across CSS and JS (scroll-reveal, counter, typewriter, parallax, particles, card-tilt, magnetic buttons, image-reveal, stagger, cursor-glow, scroll-progress, testimonial slider).
+	- Added full `prefers-reduced-motion: reduce` support: CSS media query disables all transition/animation durations and instantly reveals `.animate-on-scroll` elements; JS guards skip parallax, particles, card-tilt, magnetic buttons, cursor-glow, stagger, image-reveal, typewriter, and counters for reduced-motion users.
+	- Fixed hero CTA visibility: `.hero .animate-on-scroll` and `.hero-panel.animate-on-scroll` now have `opacity: 1; transform: none` in CSS so the primary "Book service" CTA and hero content are always visible even before JS fires.
+	- Typewriter no longer clears text content for reduced-motion users, preserving the visible tagline as a fallback.
+	- Counter values display final numbers instantly for reduced-motion users instead of animating from 0.
 
 ## 7. Content Quality
 

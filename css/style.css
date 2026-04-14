@@ -1975,3 +1975,35 @@ body.menu-open {
         width: 100%;
     }
 }
+
+/* ---- Reduced motion: respect user preference ---- */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    .animate-on-scroll {
+        opacity: 1;
+        transform: none;
+    }
+
+    .preloader {
+        display: none !important;
+    }
+}
+
+/* ---- Above-the-fold: always visible even before JS fires ---- */
+.hero .animate-on-scroll,
+.hero-panel.animate-on-scroll,
+.hero-visual.animate-on-scroll {
+    opacity: 1;
+    transform: none;
+}
