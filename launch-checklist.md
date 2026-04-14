@@ -98,8 +98,15 @@ Current state snapshot:
 
 ## 8. Brand and Assets
 
-- [ ] Confirm the exact logo file and use a single preferred format consistently across the site.
-- [ ] Match the final color system exactly to the logo if any current accent colors are still approximate.
+- [x] Confirm the exact logo file and use a single preferred format consistently across the site.
+	- Logo files: `images/logo.jpg` (fallback) and `images/logo.webp` (preferred). Both exist and are used consistently via `<picture>` elements with WebP source + JPG fallback across all 8 HTML pages (header brand-badge and footer logo).
+	- JSON-LD schema consistently references `https://springsgaragedoorservices.com/images/logo.webp` for the `logo` property on every page.
+	- No mixed formats, no stale references, no missing files.
+- [x] Match the final color system exactly to the logo if any current accent colors are still approximate.
+	- Extracted exact logo pixel colors using PIL: gold `#ffc631` (RGB 255,198,49), red `#fe0000` (RGB 254,0,0), deep red `#bf0101` (RGB 191,1,1).
+	- Updated CSS custom properties: `--gold` from `#f6bf2a` to `#ffc631`, `--gold-soft` from `#ffde7f` to `#ffe08f`, `--red` from `#d61d17` to `#fe0000`, `--red-deep` from `#8f1511` to `#bf0101`.
+	- Updated 29 hardcoded `rgba(246,191,42,...)` to `rgba(255,198,49,...)` and 10 hardcoded `rgba(214,29,23,...)` to `rgba(254,0,0,...)` throughout style.css.
+	- All accent colors now match the exact logo palette.
 - [x] Create optimized WebP versions for the primary photos if needed.
 	- Completed as part of Section 3 image optimization. All used photos and brand raster logos now have WebP variants served via `<picture>` elements.
 - [ ] Check image cropping, focal points, and dark-theme contrast on mobile and desktop.
