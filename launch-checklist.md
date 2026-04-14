@@ -45,7 +45,10 @@ Current state snapshot:
 - [x] Add a browser favicon and site icons.
 - [x] Create a default social share image for Open Graph.
 - [x] Make image alt text specific and local instead of generic.
-- [ ] Compress and standardize images so page speed stays strong.
+- [x] Compress and standardize images so page speed stays strong.
+	- Created WebP versions of all 23 used raster images (17 photos + 6 brand logos). Total savings: 5,526 KB down to 3,552 KB (36% reduction).
+	- Wrapped all 47 `<img>` tags across 8 HTML pages in `<picture>` elements with WebP `<source>` and original JPG/PNG fallback for full browser compatibility.
+	- Fixed a broken image reference in privacy.html (`white-raised-panel-pair-driveway.jpg` did not exist, replaced with `white-raised-panel-stone-facade.jpg`).
 
 ## 4. Structured Data
 
@@ -85,7 +88,8 @@ Current state snapshot:
 
 - [ ] Confirm the exact logo file and use a single preferred format consistently across the site.
 - [ ] Match the final color system exactly to the logo if any current accent colors are still approximate.
-- [ ] Create optimized WebP versions for the primary photos if needed.
+- [x] Create optimized WebP versions for the primary photos if needed.
+	- Completed as part of Section 3 image optimization. All used photos and brand raster logos now have WebP variants served via `<picture>` elements.
 - [ ] Check image cropping, focal points, and dark-theme contrast on mobile and desktop.
 
 ## 9. Compliance and Trust
