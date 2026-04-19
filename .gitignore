@@ -7,3 +7,4 @@ Desktop.ini
 .env
 .env.*
 !.env.example
+docs/gsc-audit-2026-04-18.md
