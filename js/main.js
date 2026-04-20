@@ -848,6 +848,79 @@
   }
 
   /* ----------------------------------------------------------
+     17b. GA4 EVENT TRACKING
+     Fires custom events to Google Analytics 4
+  ---------------------------------------------------------- */
+  function initGA4Events() {
+    if (typeof gtag !== 'function') return;
+
+    // Phone call clicks
+    qsa('a[href^="tel:"]').forEach(function (link) {
+      link.addEventListener('click', function () {
+        gtag('event', 'phone_call_click', {
+          link_text: link.textContent.trim(),
+          page_location: window.location.pathname
+        });
+      });
+    });
+
+    // Email clicks
+    qsa('a[href^="mailto:"]').forEach(function (link) {
+      link.addEventListener('click', function () {
+        gtag('event', 'email_click', {
+          link_text: link.textContent.trim(),
+          page_location: window.location.pathname
+        });
+      });
+    });
+
+    // Google Maps / directions clicks
+    qsa('a[href*="maps.app.goo.gl"], a[href*="google.com/maps"]').forEach(function (link) {
+      link.addEventListener('click', function () {
+        gtag('event', 'directions_click', {
+          page_location: window.location.pathname
+        });
+      });
+    });
+
+    // CTA button clicks
+    qsa('.cta-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        gtag('event', 'cta_click', {
+          link_text: btn.textContent.trim(),
+          link_url: btn.getAttribute('href') || '',
+          page_location: window.location.pathname
+        });
+      });
+    });
+
+    // Form start (first field interaction)
+    var form = qs('#contactForm');
+    if (form) {
+      var formStarted = false;
+      form.addEventListener('focusin', function () {
+        if (!formStarted) {
+          formStarted = true;
+          gtag('event', 'form_start', {
+            page_location: window.location.pathname
+          });
+        }
+      });
+
+      // Form submit (fire after validation passes)
+      form.addEventListener('submit', function () {
+        var serviceType = form.querySelector('#serviceType');
+        var urgency = form.querySelector('#urgency');
+        gtag('event', 'form_submit', {
+          service_type: serviceType ? serviceType.value : '',
+          urgency: urgency ? urgency.value : '',
+          page_location: window.location.pathname
+        });
+      });
+    }
+  }
+
+  /* ----------------------------------------------------------
      18. CURRENT YEAR AUTO-UPDATE IN FOOTER
   ---------------------------------------------------------- */
   function initCurrentYear() {
@@ -1466,6 +1539,7 @@
     initScrollProgress();
     initBackToTop();
     initPhoneTracking();
+    initGA4Events();
 
     console.log('%c Springs Garage Door Services ', 'background:#f59e0b;color:#000;font-size:14px;font-weight:bold;padding:4px 12px;border-radius:4px;');
     console.log('%c Website initialized successfully ', 'color:#888;font-size:11px;');
