@@ -1501,10 +1501,73 @@
   }
 
   /* ----------------------------------------------------------
+     CONSENT BANNER
+     Google Consent Mode v2 - compliant with GDPR, CCPA, CPA.
+     Analytics storage defaults to 'denied' in the HTML head.
+     This module shows a banner if the user has not yet decided,
+     and upgrades consent to 'granted' on acceptance.
+  ---------------------------------------------------------- */
+  function initConsentBanner() {
+    const STORAGE_KEY = 'sgds_consent';
+    const banner = qs('#consent-banner');
+    if (!banner) return;
+
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    // Already decided - apply silently
+    if (saved === 'granted') {
+      applyConsent('granted');
+      banner.remove();
+      return;
+    }
+    if (saved === 'denied') {
+      banner.remove();
+      return;
+    }
+
+    // Show banner after a short delay so it does not block first paint
+    setTimeout(() => banner.classList.add('is-visible'), 800);
+
+    const acceptBtn = qs('#consent-accept', banner);
+    const declineBtn = qs('#consent-decline', banner);
+
+    if (acceptBtn) {
+      acceptBtn.addEventListener('click', () => {
+        applyConsent('granted');
+        localStorage.setItem(STORAGE_KEY, 'granted');
+        hideBanner();
+      });
+    }
+
+    if (declineBtn) {
+      declineBtn.addEventListener('click', () => {
+        localStorage.setItem(STORAGE_KEY, 'denied');
+        hideBanner();
+      });
+    }
+
+    function applyConsent(state) {
+      if (typeof gtag === 'function') {
+        gtag('consent', 'update', {
+          'analytics_storage': state
+        });
+      }
+    }
+
+    function hideBanner() {
+      banner.classList.remove('is-visible');
+      setTimeout(() => banner.remove(), 500);
+    }
+  }
+
+  /* ----------------------------------------------------------
      INITIALIZATION
      Runs all modules on DOMContentLoaded
   ---------------------------------------------------------- */
   document.addEventListener('DOMContentLoaded', () => {
+    // --- Consent (must run first) ---
+    initConsentBanner();
+
     // --- Core functionality ---
     initPreloader();
     initNavScroll();
