@@ -1255,8 +1255,8 @@
       reviewsEndpoint: '',
       businessName: 'Springs Garage Door Services',
       businessQuery: 'Springs Garage Door Services, 3350 Chelton Loop N Ste A, Colorado Springs, CO 80909',
-      profileUrl: 'https://maps.app.goo.gl/xWrMC7ewGm9NDtC78',
-      reviewUrl: 'https://maps.app.goo.gl/xWrMC7ewGm9NDtC78',
+      profileUrl: 'https://maps.app.goo.gl/TB3CG7oJpehU5QyW7',
+      reviewUrl: 'https://maps.app.goo.gl/TB3CG7oJpehU5QyW7',
       fallbackRating: '5.0',
       maxReviews: 2,
     };

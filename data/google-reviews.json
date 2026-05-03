@@ -1,48 +1,13 @@
 {
   "place": {
-    "name": "Locksmith Solutions LLC",
-    "place_id": "ChIJr8kfZN7vwogRIRvm9Kjuk7g",
-    "formatted_address": "3673 Bareback Dr, Colorado Springs, CO 80922, USA",
-    "rating": 5,
-    "user_ratings_total": 148,
-    "url": "https://maps.google.com/?cid=13300236533985844001",
-    "reviews": [
-      {
-        "author_name": "Tawneya Sheprow",
-        "rating": 5,
-        "text": "We’ve used this locksmith’s services twice now, and each experience has been excellent. He is extremely professional, prompt, and maintains a very reliable and timely schedule for appointments. His knowledge and expertise are clear in the quality of his work, and he consistently delivers successful results.\nWe truly appreciate his dependability and highly recommend him to anyone in need of a skilled and trustworthy locksmith!",
-        "relative_time_description": "3 weeks ago",
-        "time": 1774890483
-      },
-      {
-        "author_name": "George Krasnopolskiy",
-        "rating": 5,
-        "text": "Eyal did a great job changing the locks on our new home. He even came back and helped me install the app and use it, Highly recommended. Its rare these days to have someone follow up after a service call and actually want to help get everything working smoothly.",
-        "relative_time_description": "a month ago",
-        "time": 1773937717
-      },
-      {
-        "author_name": "Yair Bennaim",
-        "rating": 5,
-        "text": "Replaced all my locks and door handles, fixed our door frames while he was at it. Highly recommended!",
-        "relative_time_description": "a month ago",
-        "time": 1773078635
-      },
-      {
-        "author_name": "Seth Allen",
-        "rating": 5,
-        "text": "Eyal is amazing. We’ve had him work on everything from cutting new keys and rekeying locks to installing new hardware and closers. I cannot recommend Eyal and his company enough, very knowledgeable and capable.",
-        "relative_time_description": "2 months ago",
-        "time": 1771885955
-      },
-      {
-        "author_name": "Jason Reese",
-        "rating": 5,
-        "text": "⭐⭐⭐⭐ 10/10 – Highly Recommend!\n\nMr. Eyal Fuchs delivered absolutely exceptional locksmith service. I called regarding an issue with a door frame and a deadbolt that wasn’t seating properly, and he responded within 10 minutes of my call. After a quick and accurate diagnosis, he had the problem fully resolved in about 15 minutes.\n\nHe was 100% professional, courteous, and genuinely kind throughout the entire process. On top of that, he went above and beyond by offering—free of charge—to double-check and ensure that our new Schlage deadbolt lock was installed correctly and working perfectly.\n\nFast, skilled, honest, and personable service like this is rare. I wouldn’t hesitate to call him again and would recommend him to anyone in need of a reliable locksmith.",
-        "relative_time_description": "2 months ago",
-        "time": 1769736033
-      }
-    ]
+    "name": "Springs Garage Door Services",
+    "place_id": "",
+    "formatted_address": "3350 Chelton Loop N Ste A, Colorado Springs, CO 80909, USA",
+    "rating": null,
+    "user_ratings_total": null,
+    "url": "https://maps.app.goo.gl/TB3CG7oJpehU5QyW7",
+    "reviews": []
   },
-  "fetched_at": "2026-04-26T06:46:40.043Z"
+  "fetched_at": null,
+  "_note": "Placeholder - regenerate by running the 'Fetch Google Reviews' GitHub Action after updating the GOOGLE_PLACE_ID secret to the correct Place ID for Springs Garage Door Services."
 }
