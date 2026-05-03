@@ -11,6 +11,25 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="manifest" href="site.webmanifest">
     <link rel="stylesheet" href="css/style.css">
+    <script>
+      (function() {
+        var redirectMap = {
+          "/about-us": "/about.html",
+          "/about-us/": "/about.html",
+          "/book-online": "/contact.html",
+          "/book-online/": "/contact.html",
+          "/s-projects-basic": "/services.html",
+          "/s-projects-basic/": "/services.html",
+          "/contact": "/contact.html",
+          "/services": "/services.html",
+          "/home": "/"
+        };
+        var path = window.location.pathname.toLowerCase();
+        if (redirectMap[path]) {
+          window.location.replace(redirectMap[path]);
+        }
+      })();
+    </script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-BDBY7TZH4T"></script>
     <script>
